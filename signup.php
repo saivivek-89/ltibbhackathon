@@ -1,460 +1,462 @@
 <?php
-class script{
+require_once 'config.php';
 
-        public $con;
+$signup_error = '';
+$login_error = '';
+$signup_success = '';
+$login_success = '';
 
-        public function __construct(){
-
-                $server = "mysqldb";
-                $user = "root";
-                $pass = "admin123";
-                $db = "customers";
-
-                $this->con = mysqli_connect($server,$user,$pass,$db) or die("unable to connect");
-        }
-
-        public function add($username,$name,$password){
-                $sql = "insert into users(username,name,password) values('".urlencode($username)."','".urlencode($name)."','".urlencode($password)."')";
-                $res = mysqli_query($this->con,$sql) or die("unable to perform operation");
-                if($res) {
-                        echo "Data Added ";
-                } else {
-                        echo "Operational Failure";
-                }
-        }
-                public function getdata() {
-                        $sql = "select * from users";
-                        $res = mysqli_query($this->con,$sql) or die("unable to fetch");
-                        $cp = mysqli_fetch_assoc($res);
-                        //var_dump($cp);
-                        if(count($cp)){
-                                echo '
-                                <table>
-                                        <tr>
-                                                <th>FName </th>
-                                                <th>LName</th>
-                                                 <th>Mobileno</th>
-<th>City</th>
-<th>Date</th>	
-<th>DOB</th><th>Mail</th><th>BloodGroup</th>											 
-																			   
-                                        </tr>
-                                ';
-                                while($row = mysqli_fetch_array($res)){
-                                        echo '<tr>
-                                         <td>'.urlencode($row['fname']).'</td>
-                                              <td>'.urlencode($row['lname']).'</td>
-											<td>'.urlencode($row['mobileno']).'</td>
-												<td>'.urlencode($row['city']).'</td>
-												<td>'.urlencode($row['date']).'</td>
-												 <td>'.urlencode($row['dob']).'</td>
-											 	 <td>'.urlencode($row['bloodgroup']).'</td>
-												 
-												 
-												 </tr>';
-												  
-                                }
-                                        echo '
-                                        </table>
-                                        ';
-                        }else{
-                                echo "No Data Found";
-                        }
-                }
-        }
-
-?>
-
-<html lang="en">
-  <head>
-    <title>Donate-Blood - LTIBB</title>
-    <meta property="og:title" content="Donate-Blood - LTIBB" />
-
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta charset="utf-8" />
-    <meta property="twitter:card" content="summary_large_image" />
-    <style data-tag="reset-style-sheet">
-      html {  line-height: 1.15;}body {  margin: 0;}* {  box-sizing: border-box;  border-width: 0;  border-style: solid;}p,li,ul,pre,div,h1,h2,h3,h4,h5,h6 {  margin: 0;  padding: 0;}button,input,optgroup,select,textarea {  font-family: inherit;  font-size: 100%;  line-height: 1.15;  margin: 0;}button,select {  text-transform: none;}button,[type="button"],[type="reset"],[type="submit"] {  -webkit-appearance: button;}button::-moz-focus-inner,[type="button"]::-moz-focus-inner,[type="reset"]::-moz-focus-inner,[type="submit"]::-moz-focus-inner {  border-style: none;  padding: 0;}button:-moz-focus,[type="button"]:-moz-focus,[type="reset"]:-moz-focus,[type="submit"]:-moz-focus {  outline: 1px dotted ButtonText;}a {  color: inherit;  text-decoration: inherit;}input {  padding: 2px 4px;}img {  display: block;}html { scroll-behavior: smooth  }
-    </style>
-    <style data-tag="default-style-sheet">
-      html {
-        font-family: Lexend;
-        font-size: 16px;
-      }
-
-      body {
-        font-weight: 400;
-        font-style:normal;
-        text-decoration: none;
-        text-transform: none;
-        letter-spacing: normal;
-        line-height: 1.1;
-        color: var(--dl-color-grays-dark100);
-        background-color: var(--dl-color-grays-white100);
-
-      }
-    </style>
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Fira+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
-      data-tag="font"
-    />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lexend:wght@100;200;300;400;500;600;700;800;900&display=swap"
-      data-tag="font"
-    />
-    <style>
-      ::placeholder{
-      color: #63667066;
-      }
-    </style>
-    <link rel="stylesheet" href="./style.css" />
-  </head>
-  <body>
-    <div>
-      <link href="./donate-blood.css" rel="stylesheet" />
-
-      <div class="donate-blood-container">
-        <main class="donate-blood-main">
-          <div class="donate-blood-hero section-container">
-            <div class="donate-blood-max-width max-content-container">
-              <div class="donate-blood-content-container">
-                <span class="donate-blood-text">LTI Blood Bank</span>
-                <div class="donate-blood-card">
-                  <h4 class="donate-blood-text01 heading4">Donate Blood</h4>
-                  <svg viewBox="0 0 1024 1024" class="donate-blood-icon">
-                    <path
-                      d="M731.429 585.143h174.286c-6.857 7.429-11.429 11.429-12.571 12.571l-356 342.857c-6.857 6.857-16 10.286-25.143 10.286s-18.286-3.429-25.143-10.286l-356.571-344c-1.143-0.571-5.714-4.571-12-11.429h210.857c16.571 0 31.429-11.429 35.429-27.429l40-160.571 108.571 381.143c4.571 15.429 18.857 26.286 35.429 26.286v0c16 0 30.286-10.857 34.857-26.286l83.429-277.143 32 64c6.286 12 18.857 20 32.571 20zM1024 340.571c0 65.714-28.571 125.714-58.857 171.429h-210.857l-63.429-126.286c-6.286-13.143-21.143-21.143-35.429-20-15.429 1.714-28 11.429-32 26.286l-73.714 245.714-112-392c-4.571-15.429-18.857-26.286-36-26.286-16.571 0-30.857 11.429-34.857 27.429l-66.286 265.143h-241.714c-30.286-45.714-58.857-105.714-58.857-171.429 0-167.429 102.286-267.429 273.143-267.429 100 0 193.714 78.857 238.857 123.429 45.143-44.571 138.857-123.429 238.857-123.429 170.857 0 273.143 100 273.143 267.429z"
-                    ></path>
-                  </svg>
-                  <span class="donate-blood-text02 content-Light">
-                    A blood donation occurs when a person voluntarily has blood
-                    drawn and used for transfusions and/or made into
-                    biopharmaceutical medications by a process called
-                    fractionation (separation of whole blood components).
-                  </span>
-                  <span class="donate-blood-text03">Donate Blood</span>
-                </div>
-              </div>
-            </div>
-          </div>
-		
-          <div class="donate-blood-section-one section-container">
-  <form method="post">
-<button type="submit" formaction="/index.html" style="background: grey; height: 45px; width: 200px; color:white; font:oblique;">Redirect to home page</button><br><br>
-</form><table>
-              <span class="donate-blood-text04">    
-			  <form method="post"><tr><td>
-        User Name:</td><td> <input type="text" name="username" required> </td> </tr>
-                  
-                <tr><td>
-        Name: </td><td><input type="text" name="name" required></td> </tr>
-                  <tr><td>
-                      
-          Password:</td> <td><input type="password" name="password" required> </td></tr>
-                  <tr><td><br>
-                  	  <input type="submit" name="sub" style="background-color:Cyan"></td></tr>
-                  </table>
-</span>
-</div>
-</form>
-<?php
-$script = new script();
-if(isset($_POST['sub'])){
-        $script->add($_POST['username'],$_POST['name'],$_POST['password']);
-}
-?>
-
-          </div>
-          <div class="donate-blood-section-four section-container">
-            <div class="donate-blood-max-width1 max-content-container"></div>
-            <div data-type="slider" class="donate-blood-slider">
-              <div data-type="slide" class="donate-blood-slide slide">
-                <div class="donate-blood-max-width2 max-content-container">
-                  <div class="donate-blood-left-side">
-                    <div class="donate-blood-image-container">
-                      <img
-                        alt="image"
-                        src="public/playground_assets/blood%20donation%20logo-600w.png"
-                        class="donate-blood-image"
-                      />
-                      <img
-                        alt="image"
-                        src="public/playground_assets/vector%202%20%5B2%5D-700w.png"
-                        class="donate-blood-image01"
-                      />
-                      <div class="donate-blood-slider-controls">
-                        <div
-                          data-action="previousSlide"
-                          class="donate-blood-go-left"
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            class="donate-blood-icon2"
-                          >
-                            <path
-                              d="M854 470v84h-520l238 240-60 60-342-342 342-342 60 60-238 240h520z"
-                            ></path>
-                          </svg>
-                        </div>
-                        <div
-                          data-action="nextSlide"
-                          class="donate-blood-go-right"
-                        >
-                          <svg
-                            viewBox="0 0 1024 1024"
-                            class="donate-blood-icon4"
-                          >
-                            <path
-                              d="M512 170l342 342-342 342-60-60 238-240h-520v-84h520l-238-240z"
-                            ></path>
-                          </svg>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="donate-blood-right-side">
-                    <span class="donate-blood-testimonial">
-                      Blood donation is an extremely noble deed, yet there is a
-                      scarcity of regular donors across LTI. We focus on
-                      creating &amp; expanding a virtual army of blood donating
-                      volunteers who could be searched and contacted by
-                      family/care givers of a patient in times of need.
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="donate-blood-section-five section-container">
-            <div class="donate-blood-max-width3 max-content-container">
-              <div class="donate-blood-cards-container">
-                <div class="donate-blood-grid-card">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203-600h.png"
-                    class="donate-blood-image02"
-                  />
-                  <span class="donate-blood-text05">
-                    You may need a blood donation in the future.
-                  </span>
-                  <span class="donate-blood-text06 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-                <div class="donate-blood-grid-card1">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B1%5D-200h.png"
-                    class="donate-blood-image03"
-                  />
-                  <span class="donate-blood-text07">
-                    Safe blood saves lives
-                  </span>
-                  <span class="donate-blood-text08">
-                    Blood is needed by women with complications during pregnancy
-                    and childbirth, children with severe anaemia, often
-                    resulting from malaria or malnutrition, accident victims and
-                    surgical and cancer patients.
-                  </span>
-                </div>
-                <div class="donate-blood-grid-card2">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B2%5D-200h.png"
-                    class="donate-blood-image04"
-                  />
-                  <span class="donate-blood-text09">
-                    Every donation makes a difference.
-                  </span>
-                  <span class="donate-blood-text10 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-                <div class="donate-blood-grid-card3">
-                  <img
-                    alt="image"
-                    src="public/playground_assets/vector%203%20%5B3%5D-200h.png"
-                    class="donate-blood-image05"
-                  />
-                  <span class="donate-blood-text11">
-                    You may need a blood donation in the future.
-                  </span>
-                  <span class="donate-blood-text12 content-Light">
-                    Blood donation is considered as the gift of life as there is
-                    no substitute present for human blood. At every 2 second
-                    someone somewhere needs the blood. Every day more than
-                    38,000 blood donations are needed.
-                  </span>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="donate-blood-section-six section-container">
-            <div class="donate-blood-max-width4 max-content-container"></div>
-            <div class="donate-blood-section-six1 section-container">
-              <div class="donate-blood-max-width5 max-content-container">
-                <div class="donate-blood-content-container1">
-                  <h1 class="donate-blood-text13">
-                    <span class="donate-blood-text14">
-                      Start Registering for donating blood 
-                    </span>
-                    <br />
-                    <br />
-                  </h1>
-                  <div class="donate-blood-input-container">
-                    <img
-                      alt="image"
-                      src="public/playground_assets/stars-600h.png"
-                      class="donate-blood-image06"
-                    />
-                    <img
-                      alt="image"
-                      src="public/playground_assets/vector%203-600h.png"
-                      class="donate-blood-image07"
-                    />
-                  </div>
-                </div>
-                <div class="donate-blood-container1">
-                  <div class="donate-blood-image-container1">
-                    <img
-                      alt="image"
-                      src="public/playground_assets/blood%20donation%20logo-600w.png"
-                      class="donate-blood-image08"
-                    />
-                    <img
-                      alt="image"
-                      src="public/playground_assets/vector%203%20%5B1%5D-200h.png"
-                      class="donate-blood-image09"
-                    />
-                  </div>
-                </div>
-              </div>
-              <button class="donate-blood-button button-primary button">
-                Get started
-              </button>
-              <span class="donate-blood-text17">It improves your health.</span>
-            </div>
-          </div>
-        </main>
-        <footer class="donate-blood-footer section-container">
-          <div class="donate-blood-max-width6 max-content-container">
-            <div class="donate-blood-container2">
-              <img
-                alt="image"
-                src="public/playground_assets/blood%20donation%20logo%20%5B1%5D-500h.png"
-                class="donate-blood-image10"
-              />
-              <span class="donate-blood-text18">
-                <br />
-                <span>
-                  Blood Donation Prerequisites is a thing that is required as a
-                  prior condition for something else to happen or exist.A donor
-                  is someone who gives a part of their body or some of their
-                  blood to be used by doctors to help a person who is ill
-                </span>
-              </span>
-            </div>
-            <div class="donate-blood-container3">
-              <div class="donate-blood-links"></div>
-              <img
-                alt="image"
-                src="public/playground_assets/clipart1033863-600w.png"
-                class="donate-blood-image11"
-              />
-            </div>
-            <img
-              alt="image"
-              src="public/playground_assets/blood%20donation%20logo%20%5B1%5D-500h.png"
-              class="donate-blood-image12"
-            />
-          </div>
-        </footer>
-      </div>
-    </div>
-    <script src="https://unpkg.com/@teleporthq/teleport-custom-scripts"></script>
-    <script>
-      window.onload = () => {
-        const runAllScripts = () => {
-          initializeAllSliders();
-        };
-
-        const listenForUrlChanges = () => {
-          let url = location.href;
-          document.body.addEventListener(
-            "click",
-            () => {
-              requestAnimationFrame(() => {
-                if (url !== location.href) {
-                  runAllScripts();
-                  url = location.href;
-                }
-              });
-            },
-            true
-          );
-        };
-
-        const initializeAllSliders = () => {
-          const allSliders = document.querySelectorAll('[data-type="slider"]');
-          allSliders.forEach((carrousel) => {
-            initializeSlider(carrousel);
-          });
-        };
-
-        const initializeSlider = (carrousel) => {
-          let currentSlide = 0;
-
-          const slides = carrousel.querySelectorAll('[data-type="slide"]');
-          const nextSlideBtns = carrousel.querySelectorAll(
-            '[data-action="nextSlide"]'
-          );
-          const previousSlideBtns = carrousel.querySelectorAll(
-            '[data-action="previousSlide"]'
-          );
-
-          const changeSlide = (slideIndex, action) => {
-            currentSlide = slideIndex;
-
-            switch (action) {
-              case "next":
-                slideIndex === slides.length - 1
-                  ? (currentSlide = 0)
-                  : currentSlide++;
-                break;
-              case "previous":
-                slideIndex === 0
-                  ? (currentSlide = slides.length - 1)
-                  : currentSlide--;
+// ===== HANDLE SIGNUP =====
+if (isset($_POST['signup'])) {
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $name = mysqli_real_escape_string($conn, $_POST['name']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $password = mysqli_real_escape_string($conn, $_POST['password']);
+    $confirm_password = mysqli_real_escape_string($conn, $_POST['confirm_password']);
+    
+    // Validation
+    if (empty($username) || empty($name) || empty($email) || empty($password)) {
+        $signup_error = "All fields are required!";
+    } elseif ($password !== $confirm_password) {
+        $signup_error = "Passwords do not match!";
+    } elseif (strlen($password) < 4) {
+        $signup_error = "Password must be at least 4 characters!";
+    } else {
+        // Check if username already exists
+        $check_sql = "SELECT * FROM users WHERE username = '$username' OR email = '$email'";
+        $check_result = $conn->query($check_sql);
+        
+        if ($check_result->num_rows > 0) {
+            $signup_error = "Username or email already exists!";
+        } else {
+            // Insert new user
+            $insert_sql = "INSERT INTO users (username, name, email, password) 
+                           VALUES ('$username', '$name', '$email', '$password')";
+            
+            if ($conn->query($insert_sql) === TRUE) {
+                $signup_success = "Account created successfully! Please login.";
+            } else {
+                $signup_error = "Error: " . $conn->error;
             }
+        }
+    }
+}
 
-            carrousel.style.transform = `translateX(${-100 * currentSlide}%)`;
-          };
+// ===== HANDLE LOGIN =====
+if (isset($_POST['login'])) {
+    $username = mysqli_real_escape_string($conn, $_POST['login_username']);
+    $password = mysqli_real_escape_string($conn, $_POST['login_password']);
+    
+    if (empty($username) || empty($password)) {
+        $login_error = "Please enter both username and password!";
+    } else {
+        $sql = "SELECT * FROM users WHERE username = '$username' AND password = '$password'";
+        $result = $conn->query($sql);
+        
+        if ($result->num_rows == 1) {
+            $row = $result->fetch_assoc();
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['user_id'] = $row['id'];
+            $_SESSION['name'] = $row['name'];
+            header("Location: index.php");
+            exit();
+        } else {
+            $login_error = "Invalid username or password!";
+        }
+    }
+}
 
-          previousSlideBtns.forEach((btn) => {
-            btn.addEventListener("click", () =>
-              changeSlide(currentSlide, "previous")
-            );
-          });
+$page_title = "Sign Up / Login";
+?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BloodConnect - Sign Up / Login</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    
+    <style>
+        :root {
+            --primary-red: #dc3545;
+            --primary-red-dark: #b02a37;
+            --primary-red-light: #f8d7da;
+            --primary-dark: #1a1a2e;
+            --shadow-md: 0 8px 30px rgba(0,0,0,0.12);
+            --shadow-lg: 0 15px 50px rgba(220, 53, 69, 0.15);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-          nextSlideBtns.forEach((btn) => {
-            btn.addEventListener("click", () =>
-              changeSlide(currentSlide, "next")
-            );
-          });
-        };
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 50%, #fce4e4 100%);
+            min-height: 100vh;
+        }
 
-        runAllScripts();
-      };
-    </script>
-  </body>
+        /* Navbar */
+        .navbar-custom {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 12px 0;
+            box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+            transition: var(--transition);
+        }
+        .navbar-brand {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: var(--primary-dark) !important;
+        }
+        .navbar-brand .brand-red { color: var(--primary-red); }
+        .nav-link {
+            font-weight: 500;
+            color: #4a4a6a !important;
+            padding: 8px 18px !important;
+            border-radius: 8px;
+            transition: var(--transition);
+        }
+        .nav-link:hover, .nav-link.active {
+            color: var(--primary-red) !important;
+            background: var(--primary-red-light);
+        }
+        .btn-donate-nav {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white !important;
+            padding: 10px 28px !important;
+            border-radius: 50px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+        .btn-donate-nav:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            color: white !important;
+        }
+
+        /* Auth Container */
+        .auth-wrapper {
+            min-height: calc(100vh - 80px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+        }
+
+        .auth-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+            background: white;
+            border-radius: 24px;
+            padding: 50px;
+            box-shadow: var(--shadow-md);
+            border: 1px solid #f0f0f0;
+        }
+
+        .auth-card {
+            padding: 10px;
+        }
+
+        .auth-card .auth-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--primary-red-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            color: var(--primary-red);
+            margin-bottom: 16px;
+        }
+
+        .auth-card h3 {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 700;
+            color: var(--primary-dark);
+            margin-bottom: 4px;
+        }
+
+        .auth-card p.subtitle {
+            color: #6c6c8a;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+
+        .auth-card .form-control {
+            border-radius: 12px;
+            padding: 12px 16px;
+            border: 2px solid #e8e8e8;
+            transition: var(--transition);
+            font-size: 0.95rem;
+        }
+
+        .auth-card .form-control:focus {
+            border-color: var(--primary-red);
+            box-shadow: 0 0 0 0.2rem rgba(220,53,69,0.15);
+        }
+
+        .auth-card .form-label {
+            font-weight: 600;
+            color: var(--primary-dark);
+            font-size: 0.9rem;
+        }
+
+        .auth-card .btn-primary-custom {
+            background: linear-gradient(135deg, #dc3545 0%, #c82333 100%);
+            color: white;
+            padding: 14px;
+            border-radius: 50px;
+            font-weight: 600;
+            width: 100%;
+            border: none;
+            transition: var(--transition);
+            font-size: 1rem;
+        }
+
+        .auth-card .btn-primary-custom:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .auth-card .btn-primary-custom:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .auth-divider {
+            width: 1px;
+            background: #e8e8e8;
+            margin: 0 -20px;
+        }
+
+        .alert-custom {
+            border-radius: 12px;
+            padding: 10px 16px;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .password-hint {
+            font-size: 0.8rem;
+            color: #6c6c8a;
+            margin-top: 4px;
+        }
+
+        @media (max-width: 768px) {
+            .auth-grid {
+                grid-template-columns: 1fr;
+                padding: 30px 20px;
+                gap: 30px;
+            }
+            .auth-divider {
+                width: 100%;
+                height: 1px;
+                margin: 0;
+            }
+            .auth-wrapper {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="index.html">
+            <i class="bi bi-droplet-half brand-red"></i>
+            Blood<span class="brand-red">Connect</span>
+        </a>
+        <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="donate-blood.php">Donate</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="find-donor.php">Find Donor</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="blood-donation-facts.html">Facts</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="blood-donation-chart.html">Chart</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-donate-nav" href="signup.php">
+                        <i class="bi bi-person-plus me-1"></i> Sign Up / Login
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ===== AUTH WRAPPER ===== -->
+<div class="auth-wrapper">
+    <div class="auth-grid">
+        
+        <!-- ===== SIGNUP SECTION ===== -->
+        <div class="auth-card">
+            <div class="auth-icon"><i class="bi bi-person-plus"></i></div>
+            <h3>Create Account</h3>
+            <p class="subtitle">Join our blood donation community</p>
+            
+            <?php if ($signup_error): ?>
+                <div class="alert alert-danger alert-custom">
+                    <i class="bi bi-exclamation-circle me-2"></i> <?php echo $signup_error; ?>
+                </div>
+            <?php endif; ?>
+            
+            <?php if ($signup_success): ?>
+                <div class="alert alert-success alert-custom">
+                    <i class="bi bi-check-circle me-2"></i> <?php echo $signup_success; ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-person me-1"></i> Full Name</label>
+                    <input type="text" class="form-control" name="name" placeholder="Enter your full name" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-person-badge me-1"></i> Username</label>
+                    <input type="text" class="form-control" name="username" placeholder="Choose a username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-envelope me-1"></i> Email</label>
+                    <input type="email" class="form-control" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-lock me-1"></i> Password</label>
+                    <input type="password" class="form-control" name="password" placeholder="Create a password" required minlength="4">
+                    <div class="password-hint">Minimum 4 characters</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-shield-lock me-1"></i> Confirm Password</label>
+                    <input type="password" class="form-control" name="confirm_password" placeholder="Confirm your password" required>
+                </div>
+                <button type="submit" name="signup" class="btn btn-primary-custom">
+                    <i class="bi bi-person-plus me-2"></i> Sign Up
+                </button>
+            </form>
+        </div>
+
+        <!-- ===== DIVIDER ===== -->
+        <div class="auth-divider"></div>
+
+        <!-- ===== LOGIN SECTION ===== -->
+        <div class="auth-card">
+            <div class="auth-icon"><i class="bi bi-box-arrow-in-right"></i></div>
+            <h3>Welcome Back</h3>
+            <p class="subtitle">Login to access your account</p>
+            
+            <?php if ($login_error): ?>
+                <div class="alert alert-danger alert-custom">
+                    <i class="bi bi-exclamation-circle me-2"></i> <?php echo $login_error; ?>
+                </div>
+            <?php endif; ?>
+            
+            <form method="POST" action="">
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-person-badge me-1"></i> Username</label>
+                    <input type="text" class="form-control" name="login_username" placeholder="Enter your username" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label"><i class="bi bi-lock me-1"></i> Password</label>
+                    <input type="password" class="form-control" name="login_password" placeholder="Enter your password" required>
+                </div>
+                <button type="submit" name="login" class="btn btn-primary-custom">
+                    <i class="bi bi-box-arrow-in-right me-2"></i> Login
+                </button>
+            </form>
+            
+            <p class="text-center mt-3" style="font-size: 0.9rem; color: #6c6c8a;">
+                <i class="bi bi-info-circle me-1"></i> 
+                Don't have an account? Use the <strong style="color: var(--primary-red);">Sign Up</strong> form.
+            </p>
+        </div>
+        
+    </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer class="footer-section">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-4 col-md-6">
+                <a href="index.html" class="footer-brand">
+                    <i class="bi bi-droplet-half" style="color: var(--primary-red);"></i>
+                    Blood<span class="brand-red">Connect</span>
+                </a>
+                <p style="margin-top: 16px; max-width: 320px; color: rgba(255,255,255,0.5);">
+                    Connecting blood donors with those in need. Every drop counts, every life matters.
+                </p>
+                <div class="footer-social">
+                    <a href="#"><i class="bi bi-facebook"></i></a>
+                    <a href="#"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#"><i class="bi bi-instagram"></i></a>
+                    <a href="#"><i class="bi bi-youtube"></i></a>
+                </div>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <h6>Quick Links</h6>
+                <a href="index.html">Home</a>
+                <a href="donate-blood.php">Donate Blood</a>
+                <a href="find-donor.php">Find Donor</a>
+                <a href="signup.php">Sign Up</a>
+            </div>
+            <div class="col-lg-2 col-md-3 col-6">
+                <h6>Resources</h6>
+                <a href="blood-donation-facts.html">Blood Facts</a>
+                <a href="blood-donation-chart.html">Compatibility</a>
+                <a href="bmi/index.html">BMI Calculator</a>
+                <a href="weightconverter/index.html">Weight Converter</a>
+            </div>
+            <div class="col-lg-3 col-md-6">
+                <h6>Contact Us</h6>
+                <p style="margin-bottom: 6px;"><i class="bi bi-envelope me-2" style="color: var(--primary-red);"></i> info@bloodconnect.org</p>
+                <p style="margin-bottom: 6px;"><i class="bi bi-phone me-2" style="color: var(--primary-red);"></i> +1 (555) 123-4567</p>
+                <p><i class="bi bi-geo-alt me-2" style="color: var(--primary-red);"></i> 123 Health Blvd, Medical City</p>
+            </div>
+        </div>
+        <hr class="footer-divider" />
+        <div class="footer-copy">
+            &copy; 2025 <strong>BloodConnect</strong>. All rights reserved. Made with <i class="bi bi-heart-fill" style="color: var(--primary-red);"></i> for humanity.
+        </div>
+    </div>
+</footer>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // Navbar scroll effect
+    window.addEventListener('scroll', function() {
+        const nav = document.getElementById('mainNav');
+        if (window.scrollY > 50) {
+            nav.classList.add('scrolled');
+        } else {
+            nav.classList.remove('scrolled');
+        }
+    });
+</script>
+
+</body>
 </html>
-
-
